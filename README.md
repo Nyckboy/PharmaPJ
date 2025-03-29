@@ -58,7 +58,7 @@ Simple console-based menu.
 
 pharmacy-management
 
-┣ 📂 src.
+┣ 📂 src
 
 ┃ ┣ 📂 models        # Data classes.
 
@@ -77,4 +77,4 @@ pharmacy-management
 
 ## 📧 Contact
 
-If you have any questions, feel free to reach out at: your.email@example.com
+If you have any questions, feel free to reach out at: abasside1234@gmail.com
