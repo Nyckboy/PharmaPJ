@@ -58,15 +58,22 @@ Simple console-based menu.
 
 pharmacy-management
 
-┣ 📂 src.
+┣ 📂 src
+
 ┃ ┣ 📂 models        # Data classes.
+
 ┃ ┣ 📂 database      # Database connection.
+
 ┃ ┣ 📂 controller    # Business logic.
+
 ┃ ┗ 📜 Main.java     # Entry point.
+
 ┣ 📂 database        # Contains the pharmacy.db file.
+
 ┣ 📂 lib             # Contains the sqlite-jdbc JAR.
+
 ┗ 📜 README.md       # Project instructions.
 
 ## 📧 Contact
 
-If you have any questions, feel free to reach out at: your.email@example.com
+If you have any questions, feel free to reach out at: abasside1234@gmail.com
