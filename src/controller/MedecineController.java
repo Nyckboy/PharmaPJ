@@ -11,15 +11,15 @@ import java.util.Scanner;
 
 public class MedecineController {
 
-    private static void addMedecineToDB(String name, String category, double price, int stock, String expiryDate){
-        String sqlQuerry = "INSERT INTO medecines (name, category, price, stock, expiry_date) values (?,?,?,?,?)";
+    private static void addMedecineToDB(Medecine medecine) {
+        String sqlQuery = "INSERT INTO medecines (name, category, price, stock, expiry_date) values (?,?,?,?,?)";
         try(Connection conn = DataBaseManager.connect();
-            PreparedStatement pstmt = conn.prepareStatement(sqlQuerry)) {
-            pstmt.setString(1, name);
-            pstmt.setString(2, category);
-            pstmt.setDouble(3, price);
-            pstmt.setInt(4, stock);
-            pstmt.setString(5, expiryDate);
+            PreparedStatement pstmt = conn.prepareStatement(sqlQuery)) {
+            pstmt.setString(1, medecine.getName());
+            pstmt.setString(2, medecine.getCategory());
+            pstmt.setDouble(3, medecine.getPrice());
+            pstmt.setInt(4, medecine.getStock());
+            pstmt.setString(5, medecine.getExpiryDate());
             pstmt.executeUpdate();
             System.out.println("Medicine added successfully.");
         } catch (SQLException e) {
@@ -47,11 +47,7 @@ public class MedecineController {
         System.out.print("Confirme [Y/N] : ");
         String choice = scanner.nextLine().toLowerCase();
         if (choice.equals("yes") || choice.equals("y")) {
-            addMedecineToDB(medecine.getName(), 
-                            medecine.getCategory(), 
-                            medecine.getPrice(), 
-                            medecine.getStock(), 
-                            medecine.getExpiryDate());
+            addMedecineToDB(medecine);
         }else if (choice.equals("no") || choice.equals("n")) {
             return;
         }
@@ -79,10 +75,10 @@ public class MedecineController {
         return medecines;
     }
 
-    public static void updateMedecineToDB(Medecine toModify){
-        String sqlQuerry = "UPDATE medecines set name = ?, category = ?, price = ?, stock = ?, expiry_date = ? where id = ?";
+    private static void updateMedecineToDB(Medecine toModify){
+        String sqlQuery = "UPDATE medecines set name = ?, category = ?, price = ?, stock = ?, expiry_date = ? where id = ?";
         try(Connection conn = DataBaseManager.connect();
-            PreparedStatement pstmt = conn.prepareStatement(sqlQuerry)) {
+            PreparedStatement pstmt = conn.prepareStatement(sqlQuery)) {
             pstmt.setString(1, toModify.getName());
             pstmt.setString(2, toModify.getCategory());
             pstmt.setDouble(3, toModify.getPrice());
@@ -93,6 +89,89 @@ public class MedecineController {
             System.out.println("User updated successfully.");
         } catch (SQLException e) {
             System.out.println("Failed to update medecine: " + e.getMessage());
+        }
+    }
+
+    public static void updateMedecine(){
+        Scanner scanner = new Scanner(System.in);
+        List<Medecine> medecines =  MedecineController.getAllMedecinesFromDB();
+        medecines.forEach(System.out::println);
+        System.out.print("\ntype the ID of the Medecine to Update: ");
+        int choice = scanner.nextInt();
+        medecines.forEach(medecine -> {
+            if(medecine.getId() == choice){
+                while (true) {
+                    DisplayController.displayOneMedecine(medecine);
+                    System.out.println("6.Exit: ");
+                    System.out.print("choose an option to update : ");
+                    int Choice  = scanner.nextInt();
+                    scanner.nextLine();
+                    switch (Choice) {
+                        case 1:
+                        System.out.print("Name : ");
+                        medecine.setName(scanner.nextLine());
+                        break;
+                        case 2:
+                        System.out.print("Category : ");
+                        medecine.setCategory(scanner.nextLine());
+                        break;
+                        case 3:
+                        System.out.print("Price : ");
+                        medecine.setPrice(scanner.nextDouble());
+                        break;
+                        case 4:
+                        System.out.print("Stock : ");
+                        medecine.setStock(scanner.nextInt());
+                        break;
+                        case 5:
+                        System.out.print("Expiry Date : ");
+                        medecine.setExpiryDate(scanner.nextLine());
+                        break;
+                        case 6:
+                        updateMedecineToDB(medecine);
+                        return;
+                    }
+                }
+            }
+        });
+    }
+
+    private static void deleteMedecineFromDB(Medecine medecine) {
+        Scanner scanner = new Scanner(System.in);
+        String SqlQuery = "DELETE FROM medecines WHERE id = ?";
+        try(Connection conn = DataBaseManager.connect();
+            PreparedStatement pstmt = conn.prepareStatement(SqlQuery)) {
+            pstmt.setInt(1, medecine.getId());
+            pstmt.executeUpdate();
+            System.out.println("Medecine deleted successfully.");
+                scanner.nextLine();
+            } catch (SQLException e) {
+                System.out.println("Error deleting Medecine: " + e.getMessage());
+                scanner.nextLine();
+        }
+    }
+
+    public static void deleteMedecine() {
+        Scanner scanner = new Scanner(System.in);
+        List<Medecine> medecines =  MedecineController.getAllMedecinesFromDB();
+        if (medecines.isEmpty()) {
+            System.out.println("No medicines available.");
+            return;
+        }
+        medecines.forEach(System.out::println);
+        System.out.print("\ntype the ID of the Medecine to Delete: ");
+        int choice = scanner.nextInt();
+        Medecine selectedMedecine = null;
+        for (Medecine medecine : medecines) {
+            if (medecine.getId() == choice) {
+                selectedMedecine = medecine;
+                break;
+            }
+        }
+        if (selectedMedecine != null) {
+            deleteMedecineFromDB(selectedMedecine);
+        } else {
+            System.out.println("Invalid ID. No medicine found.");
         }
     }
 

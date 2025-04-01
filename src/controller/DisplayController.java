@@ -2,6 +2,8 @@ package controller;
 
 import java.util.Scanner;
 
+import models.Medecine;
+
 public class DisplayController {
 
     public static final void gotoXY(int x, int y){
@@ -33,10 +35,10 @@ public class DisplayController {
             int choice = scanner.nextInt();
             switch (choice) {
                 case 1:
-                    medecineDisplay();
+                    medecineMenuDisplay();
                     break;
                 case 2:
-                    userDisplay();
+                    userMenuDisplay();
                     break;
                 case 3:
                     break;
@@ -48,15 +50,16 @@ public class DisplayController {
         }
     }
 
-    public static void medecineDisplay(){
+    public static void medecineMenuDisplay(){
         Scanner scanner = new Scanner(System.in);
         while (true) {
             clearScreen();
             System.out.println("Title !!");
             System.out.println("1. Add Medicine");
             System.out.println("2. View Medicines");
-            System.out.println("3. Edit all Medecine");   
-            System.out.println("4. Exit");
+            System.out.println("3. Edit Medecine");   
+            System.out.println("4. Delete Medecine");
+            System.out.println("5. Exit");
             System.out.print("Choose an option: ");
             int choice = scanner.nextInt();
             switch (choice) {
@@ -70,8 +73,12 @@ public class DisplayController {
                     scanner.next();
                     break;
                 case 3:
+                    MedecineController.updateMedecine();
                     break;
                 case 4:
+                    MedecineController.deleteMedecine();
+                    break;
+                case 5:
                     return;
                 default:
                     break;
@@ -79,14 +86,14 @@ public class DisplayController {
         }
     }
 
-    public static void userDisplay(){
+    public static void userMenuDisplay(){
         Scanner scanner = new Scanner(System.in);
         while (true) {
             clearScreen();
             System.out.println("Title !!");
             System.out.println("1. Add User");
             System.out.println("2. View Users");
-            System.out.println("3. Edit all User");   
+            System.out.println("3. Edit/Delete User");   
             System.out.println("4. Exit");
             System.out.print("Choose an option: ");
             int choice = scanner.nextInt();
@@ -108,6 +115,18 @@ public class DisplayController {
                     break;
             }
         }
+    }
+
+    public static void displayOneMedecine(Medecine medecine){
+        clearScreen();
+        System.out.println("<=====Medecine=====>");
+        // System.out.println("1.ID : " + medecine.getId());
+        System.out.println("1.Name : " + medecine.getName());
+        System.out.println("2.Category : " + medecine.getCategory());
+        System.out.println("3.Price : " + medecine.getPrice());
+        System.out.println("4.Stock : " + medecine.getStock());
+        System.out.println("5.Expiry Date : " + medecine.getExpiryDate());
+        System.out.println("<==================>");
     }
 
     public static void addMedecineDisplay(){
