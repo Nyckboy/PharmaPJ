@@ -12,7 +12,7 @@ import database.DataBaseManager;
 import models.User;
 
 public class UserController {
-    public static void addUser(String name,String username,String password,String role){
+    public static void addUserToDB(String name,String username,String password,String role){
         String sqlQuerry = "INSERT INTO user(name, username, password, role) values (?,?,?,?)";
         try(Connection conn = DataBaseManager.connect();
             PreparedStatement pstmt = conn.prepareStatement(sqlQuerry)) {
@@ -27,7 +27,7 @@ public class UserController {
         }
     }
 
-    public static List<User> getAllUsers(){
+    public static List<User> getAllUsersFromDB(){
         List<User> users = new ArrayList<>();
         String sqlQuerry = "SELECT * FROM user";
 
@@ -47,7 +47,7 @@ public class UserController {
         return users;
     }
 
-    public static void updateUser(User toModidy){
+    public static void updateUserToDB(User toModidy){
         String sqlQuerry = "UPDATE user set name = ?, username = ?, password = ?, role = ? where id = ?";
 
         try(Connection conn = DataBaseManager.connect();
@@ -58,7 +58,7 @@ public class UserController {
                 pstmt.setString(4, toModidy.getrole());            
                 pstmt.setInt(5, toModidy.getId());            
         } catch (SQLException e) {
-            // TODO: handle exception
+            System.out.println("Failed to update user: " + e.getMessage());
         }
     }
 }

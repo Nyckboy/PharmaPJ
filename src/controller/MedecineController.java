@@ -5,10 +5,13 @@ import models.Medecine;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
+
+// import controller.DisplayController;
 
 public class MedecineController {
 
-    public static void addMedecine(String name, String category, double price, int stock, String expiryDate){
+    private static void addMedecineToDB(String name, String category, double price, int stock, String expiryDate){
         String sqlQuerry = "INSERT INTO medecines (name, category, price, stock, expiry_date) values (?,?,?,?,?)";
         try(Connection conn = DataBaseManager.connect();
             PreparedStatement pstmt = conn.prepareStatement(sqlQuerry)) {
@@ -22,9 +25,39 @@ public class MedecineController {
         } catch (SQLException e) {
             System.out.println("Failed to add medecine: " + e.getMessage());
         }
-    }    
+    }
+    
+    public static void addMedecine(){
+        Medecine medecine = new Medecine(0, null, null, 0, 0, null);
+        DisplayController.addMedecineDisplay();
+        Scanner scanner = new Scanner(System.in);
+        DisplayController.gotoXY(15, 2);
+        medecine.setName(scanner.nextLine());
+        DisplayController.gotoXY(15, 3);
+        medecine.setCategory(scanner.nextLine());
+        DisplayController.gotoXY(15, 4);
+        medecine.setPrice(scanner.nextDouble());
+        DisplayController.gotoXY(15, 5);
+        medecine.setStock(scanner.nextInt());
+        scanner.nextLine();
+        DisplayController.gotoXY(15, 6);
+        medecine.setExpiryDate(scanner.nextLine());
+        DisplayController.gotoXY(1, 8);
+        
+        System.out.print("Confirme [Y/N] : ");
+        String choice = scanner.nextLine().toLowerCase();
+        if (choice.equals("yes") || choice.equals("y")) {
+            addMedecineToDB(medecine.getName(), 
+                            medecine.getCategory(), 
+                            medecine.getPrice(), 
+                            medecine.getStock(), 
+                            medecine.getExpiryDate());
+        }else if (choice.equals("no") || choice.equals("n")) {
+            return;
+        }
+    }
 
-    public static List<Medecine> getAllMedecines(){
+    public static List<Medecine> getAllMedecinesFromDB(){
         List<Medecine> medecines = new ArrayList<>();
         String sqlQuerry = "SELECT * FROM medecines";
 
@@ -41,12 +74,12 @@ public class MedecineController {
                                     }
                                         
         } catch (SQLException e) {
-            System.out.println("Failed to fetch medicines: " + e.getMessage());
+            System.out.println("Failed to fetch medecines: " + e.getMessage());
         }
         return medecines;
     }
 
-    public static void updateMedecine(Medecine toModify){
+    public static void updateMedecineToDB(Medecine toModify){
         String sqlQuerry = "UPDATE medecines set name = ?, category = ?, price = ?, stock = ?, expiry_date = ? where id = ?";
         try(Connection conn = DataBaseManager.connect();
             PreparedStatement pstmt = conn.prepareStatement(sqlQuerry)) {
@@ -59,7 +92,11 @@ public class MedecineController {
             pstmt.executeUpdate();
             System.out.println("User updated successfully.");
         } catch (SQLException e) {
-            System.out.println("Failed to update user: " + e.getMessage());
+            System.out.println("Failed to update medecine: " + e.getMessage());
         }
+    }
+
+    public static void main(String[] args) {
+        addMedecine();
     }
 }
