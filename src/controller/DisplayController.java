@@ -140,11 +140,9 @@ public class DisplayController {
         System.out.println("<==================>");
     }
 
-    // public static void main(String[] args) {
-    //     clearScreen();
-    //     gotoXY(10, 5);
-    //     System.out.print("test");
-    // }
+    public static void main(String[] args) {
+        start();
+    }
 }
 
 
