@@ -12,8 +12,8 @@ This project helps manage a pharmacy by handling medicines, tracking inventory, 
 
 Use the following command to clone the project:
 
-git clone https://github.com/your-username/pharmacy-management.git
-cd pharmacy-management
+git clone https://github.com/Nyckboy/PharmaPJ.git
+cd PharmaPJ
 
 2. Add SQLite Library
 
@@ -77,4 +77,4 @@ pharmacy-management
 
 ## 📧 Contact
 
-If you have any questions, feel free to reach out at: abasside1234@gmail.com
+If you have any questions, feel free to reach out at: @soon

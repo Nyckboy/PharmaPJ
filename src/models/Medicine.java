@@ -1,6 +1,6 @@
 package models;
 
-public class Medecine {
+public class Medicine {
     private int id;
     private String name;
     private String category;
@@ -8,7 +8,7 @@ public class Medecine {
     private int stock;
     private String expiryDate;
 
-    public Medecine(int id, String name, String category, double price, int stock, String expiryDate){
+    public Medicine(int id, String name, String category, double price, int stock, String expiryDate){
         this.id = id;
         this.name = name;
         this.category = category;

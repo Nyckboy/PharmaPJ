@@ -3,7 +3,7 @@ package controller;
 import java.util.List;
 import java.util.Scanner;
 
-import models.Medecine;
+import models.Medicine;
 import models.User;
 
 public class DisplayController {
@@ -37,7 +37,7 @@ public class DisplayController {
             int choice = scanner.nextInt();
             switch (choice) {
                 case 1:
-                    medecineMenuDisplay();
+                    medicineMenuDisplay();
                     break;
                 case 2:
                     userMenuDisplay();
@@ -52,38 +52,40 @@ public class DisplayController {
         }
     }
 
-    public static void medecineMenuDisplay(){
+    public static void medicineMenuDisplay(){
         Scanner scanner = new Scanner(System.in);
         while (true) {
             clearScreen();
             System.out.println("Title !!");
             System.out.println("1. Add Medicine");
             System.out.println("2. View Medicines");
-            System.out.println("3. Edit Medecine");   
-            System.out.println("4. Delete Medecine");
-            System.out.println("5. Exit");
+            System.out.println("3. Add Medicine to Cart");
+            System.out.println("4. Edit Medicine");   
+            System.out.println("5. Delete Medicine");
+            System.out.println("6. Exit");
             System.out.print("Choose an option: ");
             try {
                 int choice = scanner.nextInt();
                 switch (choice) {
                     case 1:
-                        MedecineController.addMedecine();
+                        MedicineController.addMedicine();
                         break;
                     case 2:
                         clearScreen();
-                        List<Medecine> medecines = MedecineController.getAllMedecinesFromDB();
-                        MedecineController.getAllMedecinesFromDB().forEach(System.out::println);
-                        System.out.print("\n1.[Select] 2.[Exit] ");
+                        MedicineController.getAllMedicinesFromDB().forEach(System.out::println);
                         System.out.print("\ntype any character to exit: ");
                         scanner.next();
                         break;
                     case 3:
-                        MedecineController.updateMedecine();
+                        CartService.manageCartInteraction();
                         break;
                     case 4:
-                        MedecineController.deleteMedecine();
+                        MedicineController.updateMedicine();
                         break;
                     case 5:
+                        MedicineController.deleteMedicine();
+                        break;
+                    case 6:
                         return;
                     default:
                         break;
@@ -94,21 +96,21 @@ public class DisplayController {
         }
     }
 
-    public static void displayOneMedecine(Medecine medecine){
+    public static void displayOneMedicine(Medicine medicine){
         clearScreen();
-        System.out.println("<=====Medecine=====>");
+        System.out.println("<=====Medicine=====>");
         // System.out.println("1.ID : " + medecine.getId());
-        System.out.println("1.Name : " + medecine.getName());
-        System.out.println("2.Category : " + medecine.getCategory());
-        System.out.println("3.Price : " + medecine.getPrice());
-        System.out.println("4.Stock : " + medecine.getStock());
-        System.out.println("5.Expiry Date : " + medecine.getExpiryDate());
+        System.out.println("1.Name : " + medicine.getName());
+        System.out.println("2.Category : " + medicine.getCategory());
+        System.out.println("3.Price : " + medicine.getPrice());
+        System.out.println("4.Stock : " + medicine.getStock());
+        System.out.println("5.Expiry Date : " + medicine.getExpiryDate());
         System.out.println("<==================>");
     }
 
-    public static void addMedecineDisplay(){
+    public static void addMedicineDisplay(){
         clearScreen();
-        System.out.println("<===Add Medecine===>");
+        System.out.println("<===Add Medicine===>");
         System.out.println("Name : ");
         System.out.println("Category : ");
         System.out.println("Price : ");

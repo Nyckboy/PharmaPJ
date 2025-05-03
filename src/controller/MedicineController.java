@@ -1,7 +1,7 @@
 package controller;
 
 import database.DataBaseManager;
-import models.Medecine;
+import models.Medicine;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,10 +9,10 @@ import java.util.Scanner;
 
 // import controller.DisplayController;
 
-public class MedecineController {
+public class MedicineController {
 
-    private static void addMedecineToDB(Medecine medecine) {
-        String sqlQuery = "INSERT INTO medecines (name, category, price, stock, expiry_date) values (?,?,?,?,?)";
+    private static void addMedicineToDB(Medicine medecine) {
+        String sqlQuery = "INSERT INTO medicines (name, category, price, stock, expiry_date) values (?,?,?,?,?)";
         try(Connection conn = DataBaseManager.connect();
             PreparedStatement pstmt = conn.prepareStatement(sqlQuery)) {
             pstmt.setString(1, medecine.getName());
@@ -23,13 +23,13 @@ public class MedecineController {
             pstmt.executeUpdate();
             System.out.println("Medicine added successfully.");
         } catch (SQLException e) {
-            System.out.println("Failed to add medecine: " + e.getMessage());
+            System.out.println("Failed to add medicine: " + e.getMessage());
         }
     }
     
-    public static void addMedecine(){
-        Medecine medecine = new Medecine(0, null, null, 0, 0, null);
-        DisplayController.addMedecineDisplay();
+    public static void addMedicine(){
+        Medicine medecine = new Medicine(0, null, null, 0, 0, null);
+        DisplayController.addMedicineDisplay();
         Scanner scanner = new Scanner(System.in);
         DisplayController.gotoXY(15, 2);
         medecine.setName(scanner.nextLine());
@@ -47,21 +47,21 @@ public class MedecineController {
         System.out.print("Confirme [Y/N] : ");
         String choice = scanner.nextLine().toLowerCase();
         if (choice.equals("yes") || choice.equals("y")) {
-            addMedecineToDB(medecine);
+            addMedicineToDB(medecine);
         }else if (choice.equals("no") || choice.equals("n")) {
             return;
         }
     }
 
-    public static List<Medecine> getAllMedecinesFromDB(){
-        List<Medecine> medecines = new ArrayList<>();
-        String sqlQuerry = "SELECT * FROM medecines";
+    public static List<Medicine> getAllMedicinesFromDB(){
+        List<Medicine> medecines = new ArrayList<>();
+        String sqlQuerry = "SELECT * FROM medicines";
 
         try(Connection conn = DataBaseManager.connect();
             Statement stmt = conn.createStatement();
             ResultSet result = stmt.executeQuery(sqlQuerry)) {
             while (result.next())   {
-                medecines.add(new Medecine( result.getInt("id"), 
+                medecines.add(new Medicine( result.getInt("id"), 
                                             result.getString("name"),
                                             result.getString("category"),
                                             result.getDouble("price"),
@@ -70,13 +70,13 @@ public class MedecineController {
                                     }
                                         
         } catch (SQLException e) {
-            System.out.println("Failed to fetch medecines: " + e.getMessage());
+            System.out.println("Failed to fetch medicines: " + e.getMessage());
         }
         return medecines;
     }
 
-    private static void updateMedecineToDB(Medecine toModify){
-        String sqlQuery = "UPDATE medecines set name = ?, category = ?, price = ?, stock = ?, expiry_date = ? where id = ?";
+    private static void updateMedicineToDB(Medicine toModify){
+        String sqlQuery = "UPDATE medicines set name = ?, category = ?, price = ?, stock = ?, expiry_date = ? where id = ?";
         try(Connection conn = DataBaseManager.connect();
             PreparedStatement pstmt = conn.prepareStatement(sqlQuery)) {
             pstmt.setString(1, toModify.getName());
@@ -86,22 +86,22 @@ public class MedecineController {
             pstmt.setString(5, toModify.getExpiryDate());
             pstmt.setInt(6, toModify.getId());
             pstmt.executeUpdate();
-            System.out.println("User updated successfully.");
+            System.out.println("Medicine updated successfully.");
         } catch (SQLException e) {
             System.out.println("Failed to update medecine: " + e.getMessage());
         }
     }
 
-    public static void updateMedecine(){
+    public static void updateMedicine(){
         Scanner scanner = new Scanner(System.in);
-        List<Medecine> medecines =  MedecineController.getAllMedecinesFromDB();
-        medecines.forEach(System.out::println);
-        System.out.print("\ntype the ID of the Medecine to Update: ");
+        List<Medicine> medicines =  MedicineController.getAllMedicinesFromDB();
+        medicines.forEach(System.out::println);
+        System.out.print("\ntype the ID of the Medicine to Update: ");
         int choice = scanner.nextInt();
-        medecines.forEach(medecine -> {
-            if(medecine.getId() == choice){
+        medicines.forEach(medicine -> {
+            if(medicine.getId() == choice){
                 while (true) {
-                    DisplayController.displayOneMedecine(medecine);
+                    DisplayController.displayOneMedicine(medicine);
                     System.out.println("6.Exit: ");
                     System.out.print("choose an option to update : ");
                     int Choice  = scanner.nextInt();
@@ -109,26 +109,26 @@ public class MedecineController {
                     switch (Choice) {
                         case 1:
                         System.out.print("Name : ");
-                        medecine.setName(scanner.nextLine());
+                        medicine.setName(scanner.nextLine());
                         break;
                         case 2:
                         System.out.print("Category : ");
-                        medecine.setCategory(scanner.nextLine());
+                        medicine.setCategory(scanner.nextLine());
                         break;
                         case 3:
                         System.out.print("Price : ");
-                        medecine.setPrice(scanner.nextDouble());
+                        medicine.setPrice(scanner.nextDouble());
                         break;
                         case 4:
                         System.out.print("Stock : ");
-                        medecine.setStock(scanner.nextInt());
+                        medicine.setStock(scanner.nextInt());
                         break;
                         case 5:
                         System.out.print("Expiry Date : ");
-                        medecine.setExpiryDate(scanner.nextLine());
+                        medicine.setExpiryDate(scanner.nextLine());
                         break;
                         case 6:
-                        updateMedecineToDB(medecine);
+                        updateMedicineToDB(medicine);
                         return;
                     }
                 }
@@ -136,40 +136,40 @@ public class MedecineController {
         });
     }
 
-    private static void deleteMedecineFromDB(Medecine medecine) {
+    private static void deleteMedicineFromDB(Medicine medecine) {
         Scanner scanner = new Scanner(System.in);
-        String SqlQuery = "DELETE FROM medecines WHERE id = ?";
+        String SqlQuery = "DELETE FROM medicines WHERE id = ?";
         try(Connection conn = DataBaseManager.connect();
             PreparedStatement pstmt = conn.prepareStatement(SqlQuery)) {
             pstmt.setInt(1, medecine.getId());
             pstmt.executeUpdate();
-            System.out.println("Medecine deleted successfully.");
+            System.out.println("Medicine deleted successfully.");
                 scanner.nextLine();
             } catch (SQLException e) {
-                System.out.println("Error deleting Medecine: " + e.getMessage());
+                System.out.println("Error deleting Medicine: " + e.getMessage());
                 scanner.nextLine();
         }
     }
 
-    public static void deleteMedecine() {
+    public static void deleteMedicine() {
         Scanner scanner = new Scanner(System.in);
-        List<Medecine> medecines =  MedecineController.getAllMedecinesFromDB();
-        if (medecines.isEmpty()) {
+        List<Medicine> medicines =  MedicineController.getAllMedicinesFromDB();
+        if (medicines.isEmpty()) {
             System.out.println("No medicines available.");
             return;
         }
-        medecines.forEach(System.out::println);
-        System.out.print("\ntype the ID of the Medecine to Delete: ");
+        medicines.forEach(System.out::println);
+        System.out.print("\ntype the ID of the Medicine to Delete: ");
         int choice = scanner.nextInt();
-        Medecine selectedMedecine = null;
-        for (Medecine medecine : medecines) {
-            if (medecine.getId() == choice) {
-                selectedMedecine = medecine;
+        Medicine selectedMedicine = null;
+        for (Medicine medicine : medicines) {
+            if (medicine.getId() == choice) {
+                selectedMedicine = medicine;
                 break;
             }
         }
-        if (selectedMedecine != null) {
-            deleteMedecineFromDB(selectedMedecine);
+        if (selectedMedicine != null) {
+            deleteMedicineFromDB(selectedMedicine);
             scanner.nextLine();
         } else {
             System.out.println("Invalid ID. No medicine found.");
@@ -178,6 +178,6 @@ public class MedecineController {
     }
 
     public static void main(String[] args) {
-        addMedecine();
+        addMedicine();
     }
 }

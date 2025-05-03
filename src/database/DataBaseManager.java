@@ -21,7 +21,7 @@ public class DataBaseManager {
 
     public static void createTables() {
         String createMedicinesTable = """
-            CREATE TABLE IF NOT EXISTS medecines (
+            CREATE TABLE IF NOT EXISTS medicines (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 name TEXT NOT NULL,
                 category TEXT,
@@ -40,16 +40,21 @@ public class DataBaseManager {
             );    
             """;
         String createSalesTable = """
-            CREATE TABLE IF NOT EXISTS Sale (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                user_id INTEGER,
-                medecine_id TEXT NOT NULL,
-                quantity_sold TEXT NOT NULL,
-                sale_date TEXT DEFAULT CURRENT_TIMESTAMP,
-                total_price REAL,
-                FOREIGN KEY (user_id) REFERENCES User(id),
-                FOREIGN KEY (medecine_id) REFERENCES medecines(id)
+            CREATE TABLE Sales (
+                sale_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                buyer_name TEXT,
+                sale_date TEXT
             );    
+            """;
+        String createSaleItemTable = """
+            CREATE TABLE SaleItems (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                sale_id INTEGER,
+                medicine_id INTEGER,
+                quantity INTEGER,
+                price REAL,
+                FOREIGN KEY (sale_id) REFERENCES Sales(sale_id)
+            );   
             """;
 
         try (Connection conn = connect();
@@ -57,6 +62,7 @@ public class DataBaseManager {
             stmt.execute(createUsersTable);
             stmt.execute(createMedicinesTable);
             stmt.execute(createSalesTable);
+            stmt.execute(createSaleItemTable);
             System.out.println("Tables created successfully.");
         } catch (SQLException e) {
             System.out.println("Table creation failed: " + e.getMessage());
