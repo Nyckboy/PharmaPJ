@@ -1,8 +1,10 @@
 package controller;
 
+import java.util.List;
 import java.util.Scanner;
 
 import models.Medecine;
+import models.User;
 
 public class DisplayController {
 
@@ -61,58 +63,33 @@ public class DisplayController {
             System.out.println("4. Delete Medecine");
             System.out.println("5. Exit");
             System.out.print("Choose an option: ");
-            int choice = scanner.nextInt();
-            switch (choice) {
-                case 1:
-                    MedecineController.addMedecine();
-                    break;
-                case 2:
-                    clearScreen();
-                    MedecineController.getAllMedecinesFromDB().forEach(System.out::println);
-                    System.out.print("\ntype any character to exit: ");
-                    scanner.next();
-                    break;
-                case 3:
-                    MedecineController.updateMedecine();
-                    break;
-                case 4:
-                    MedecineController.deleteMedecine();
-                    break;
-                case 5:
-                    return;
-                default:
-                    break;
-            }
-        }
-    }
-
-    public static void userMenuDisplay(){
-        Scanner scanner = new Scanner(System.in);
-        while (true) {
-            clearScreen();
-            System.out.println("Title !!");
-            System.out.println("1. Add User");
-            System.out.println("2. View Users");
-            System.out.println("3. Edit/Delete User");   
-            System.out.println("4. Exit");
-            System.out.print("Choose an option: ");
-            int choice = scanner.nextInt();
-            switch (choice) {
-                case 1:
-    
-                    break;
-                case 2:
-                    clearScreen();
-                    UserController.getAllUsersFromDB().forEach(System.out::println);
-                    System.out.print("\ntype any character to exit: ");
-                    scanner.next();
-                    break;
-                case 3:
-                    break;
-                case 4:
-                    return;
-                default:
-                    break;
+            try {
+                int choice = scanner.nextInt();
+                switch (choice) {
+                    case 1:
+                        MedecineController.addMedecine();
+                        break;
+                    case 2:
+                        clearScreen();
+                        List<Medecine> medecines = MedecineController.getAllMedecinesFromDB();
+                        MedecineController.getAllMedecinesFromDB().forEach(System.out::println);
+                        System.out.print("\n1.[Select] 2.[Exit] ");
+                        System.out.print("\ntype any character to exit: ");
+                        scanner.next();
+                        break;
+                    case 3:
+                        MedecineController.updateMedecine();
+                        break;
+                    case 4:
+                        MedecineController.deleteMedecine();
+                        break;
+                    case 5:
+                        return;
+                    default:
+                        break;
+                }
+            } catch (Exception e) {
+                scanner.nextLine();
             }
         }
     }
@@ -137,6 +114,61 @@ public class DisplayController {
         System.out.println("Price : ");
         System.out.println("Stock : ");
         System.out.println("Expiry Date : ");
+        System.out.println("<==================>");
+    }
+
+    public static void userMenuDisplay(){
+        Scanner scanner = new Scanner(System.in);
+        while (true) {
+            clearScreen();
+            System.out.println("Title !!");
+            System.out.println("1. Add User");
+            System.out.println("2. View Users");
+            System.out.println("3. Edit/Delete User");   
+            System.out.println("4. Exit");
+            System.out.print("Choose an option: ");
+            int choice;
+            try {
+                choice = scanner.nextInt();
+                switch (choice) {
+                    case 1:
+        
+                        break;
+                    case 2:
+                        clearScreen(); 
+                        UserController.getAllUsersFromDB().forEach(System.out::println);
+                        System.out.print("\ntype any character to exit: ");
+                        scanner.next();
+                        break;
+                    case 3:
+                        break;
+                    case 4:
+                        return;
+                    default:
+                        break;
+                }
+            } catch (Exception e) {
+                scanner.nextLine();
+            }
+        }
+    }
+
+    public static void displayOneUser(User user){
+        clearScreen();
+        System.out.println("<=======User=======>");
+        System.out.println("Name : " + user.getName());
+        System.out.println("Username : " + user.getUsername());
+        System.out.println("Password : " + user.getpassword());
+        System.out.println("Role : " + user.getrole());
+        System.out.println("<==================>");
+    }
+
+    public static void addUserDisplay(){
+        clearScreen();
+        System.out.println("<======SignUp======>");
+        System.out.println("Name : ");
+        System.out.println("Username : ");
+        System.out.println("Password : ");
         System.out.println("<==================>");
     }
 

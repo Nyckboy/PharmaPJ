@@ -170,8 +170,10 @@ public class MedecineController {
         }
         if (selectedMedecine != null) {
             deleteMedecineFromDB(selectedMedecine);
+            scanner.nextLine();
         } else {
             System.out.println("Invalid ID. No medicine found.");
+            scanner.nextLine();
         }
     }
 
