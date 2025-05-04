@@ -12,7 +12,9 @@ public class DataBaseManager {
         Connection conn = null;
         try {
             conn = DriverManager.getConnection(URL);
-            System.out.println("Connection to SQLite has been established.");
+            Statement stmt = conn.createStatement();
+            stmt.execute("PRAGMA foreign_keys = ON");
+            // System.out.println("Connection to SQLite has been established.");
         } catch (SQLException e) {
             System.out.println("Connection failed: " + e.getMessage());
         }
@@ -53,7 +55,7 @@ public class DataBaseManager {
                 medicine_id INTEGER,
                 quantity INTEGER,
                 price REAL,
-                FOREIGN KEY (sale_id) REFERENCES Sales(sale_id)
+                FOREIGN KEY (sale_id) REFERENCES Sales(sale_id) ON DELETE CASCADE
             );   
             """;
 
@@ -73,7 +75,15 @@ public class DataBaseManager {
     // public void test()
 
     public static void main(String[] args) {
+        // DataBaseManager.createTables();
         // Connection conn = DataBaseManager.connect();
-        DataBaseManager.createTables();
+        // try(Statement stmt = conn.createStatement();){
+        //     stmt.execute("DROP TABLE IF EXISTS SaleItems;");
+        //     stmt.execute("DROP TABLE IF EXISTS Sales;");
+            
+        // } catch (SQLException e) {
+        //     System.out.println("Error sale: " + e.getMessage());
+        // }
+        
     }
 }

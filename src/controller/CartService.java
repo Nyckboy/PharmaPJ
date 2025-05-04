@@ -67,6 +67,7 @@ public class CartService {
 
         Scanner scanner = new Scanner(System.in);
         do {
+            DisplayController.clearScreen();
             System.out.println("Available Medicines:");
             for (Medicine m : medicines) {
                 System.out.println(m.getId() + " - " + m.getName() + " - " + m.getPrice() + " MAD");
@@ -91,6 +92,7 @@ public class CartService {
                     }
                     if (choice == 2) {
                         cartService.checkoutCart(cartService);
+                        choice = 1;
                     }
                 } while (choice != 1);
                 continue;

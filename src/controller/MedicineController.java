@@ -96,8 +96,13 @@ public class MedicineController {
         Scanner scanner = new Scanner(System.in);
         List<Medicine> medicines =  MedicineController.getAllMedicinesFromDB();
         medicines.forEach(System.out::println);
+        System.out.print("\n0.[Exit]");
         System.out.print("\ntype the ID of the Medicine to Update: ");
         int choice = scanner.nextInt();
+        scanner.nextLine();
+        if (choice == 0) {
+            return;
+        }
         medicines.forEach(medicine -> {
             if(medicine.getId() == choice){
                 while (true) {
@@ -159,8 +164,13 @@ public class MedicineController {
             return;
         }
         medicines.forEach(System.out::println);
+        System.out.print("\n0.[Exit]");
         System.out.print("\ntype the ID of the Medicine to Delete: ");
         int choice = scanner.nextInt();
+        scanner.nextLine();
+        if (choice == 0) {
+            return;
+        }
         Medicine selectedMedicine = null;
         for (Medicine medicine : medicines) {
             if (medicine.getId() == choice) {
@@ -170,7 +180,6 @@ public class MedicineController {
         }
         if (selectedMedicine != null) {
             deleteMedicineFromDB(selectedMedicine);
-            scanner.nextLine();
         } else {
             System.out.println("Invalid ID. No medicine found.");
             scanner.nextLine();

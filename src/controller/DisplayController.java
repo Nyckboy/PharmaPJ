@@ -28,23 +28,23 @@ public class DisplayController {
         Scanner scanner = new Scanner(System.in);
         while (true) {
             clearScreen();
-            System.out.println("\nPharmacy Management System");
-            System.out.println("1. Medecines");
-            System.out.println("2. Users");
-            System.out.println("3. Sales");
-            System.out.println("4. Exit");
-            System.out.print("Choose an option: ");
+            System.out.println("+---Pharmacy Management System---+");
+            System.out.println("| 1. Medecines                   |");
+            System.out.println("| 2. Sales                       |");
+            System.out.println("| 3. Exit                        |");
+            System.out.println("| Choose an option:              |");
+            System.out.println("+--------------------------------+");
+            gotoXY(21, 5);
             int choice = scanner.nextInt();
+            scanner.nextLine();
             switch (choice) {
                 case 1:
                     medicineMenuDisplay();
                     break;
                 case 2:
-                    userMenuDisplay();
+                    saleMenuDisplay();
                     break;
                 case 3:
-                    break;
-                case 4:
                     return;
                 default:
                     break;
@@ -56,15 +56,16 @@ public class DisplayController {
         Scanner scanner = new Scanner(System.in);
         while (true) {
             clearScreen();
-            System.out.println("Title !!");
-            System.out.println("1. Add Medicine");
-            System.out.println("2. View Medicines");
-            System.out.println("3. Add Medicine to Cart");
-            System.out.println("4. Edit Medicine");   
-            System.out.println("5. Delete Medicine");
-            System.out.println("6. Exit");
-            System.out.print("Choose an option: ");
+            System.out.println("+--------Medicine Menu--------+");
+            System.out.println("| 1. Add Medicine             |");
+            System.out.println("| 2. View Medicines           |");
+            System.out.println("| 3. Edit Medicine            |");   
+            System.out.println("| 4. Delete Medicine          |");
+            System.out.println("| 5. Exit                     |");
+            System.out.println("| Choose an option:           |");
+            System.out.println("+-----------------------------+");
             try {
+                gotoXY(21, 7);
                 int choice = scanner.nextInt();
                 switch (choice) {
                     case 1:
@@ -77,15 +78,14 @@ public class DisplayController {
                         scanner.next();
                         break;
                     case 3:
-                        CartService.manageCartInteraction();
-                        break;
-                    case 4:
+                        clearScreen();
                         MedicineController.updateMedicine();
                         break;
-                    case 5:
+                    case 4:
+                        clearScreen();
                         MedicineController.deleteMedicine();
                         break;
-                    case 6:
+                    case 5:
                         return;
                     default:
                         break;
@@ -173,6 +173,71 @@ public class DisplayController {
         System.out.println("Password : ");
         System.out.println("<==================>");
     }
+
+    public static void saleMenuDisplay(){
+        Scanner scanner = new Scanner(System.in);
+        while (true) {
+            clearScreen();
+            System.out.println("+---------Sales Menu---------+");
+            System.out.println("| 1. Add Medicine to Cart    |");
+            System.out.println("| 2. View sales              |");
+            System.out.println("| 3. Delete sales            |");   
+            System.out.println("| 4. Exit                    |");
+            System.out.println("| Choose an option:          |");
+            System.out.println("+----------------------------+");
+            gotoXY(21, 6);
+            int choice;
+            try {
+                choice = scanner.nextInt();
+                switch (choice) {
+                    case 1:
+                        CartService.manageCartInteraction();
+                        break;
+                    case 2:
+                        clearScreen(); 
+                        SalesController.viewAllSales();
+                        System.out.print("\ntype any character to exit: ");
+                        scanner.next();
+                        break;
+                    case 3:
+                        editDeleteSale();
+                        break;
+                    case 4:
+                        return;
+                    default:
+                        break;
+                }
+            } catch (Exception e) {
+                scanner.nextLine();
+            }
+        }
+    }
+
+    public static void editDeleteSale(){
+            Scanner scanner = new Scanner(System.in);
+            int choice = -1; 
+        do {
+            clearScreen();
+            SalesController.viewAllSales();
+            System.out.print("\n 1.[Exit] 2.[Delete]\nChoice: ");
+            choice = scanner.nextInt();
+            scanner.nextLine();
+            try {
+                switch (choice) {
+                    case 1:
+                        return;
+                    case 2:
+                        SalesController.deleteSale();
+                        break;
+                    default:
+                        break;
+                }
+            } catch (Exception e) {
+                scanner.nextLine();
+            }
+        } while (choice != 1);
+    }
+
 
     public static void main(String[] args) {
         start();
